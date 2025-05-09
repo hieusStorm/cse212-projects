@@ -1,3 +1,5 @@
+using System.Xml;
+
 public static class Arrays
 {
     /// <summary>
@@ -12,8 +14,17 @@ public static class Arrays
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
-
-        return []; // replace this return statement with your own
+        // <summary>
+        // Create an array with length equal to the passed in length variable
+        // Using a for loop multiple the number starting at 1 a number of times equal to the length and place the product into the corresponding spot in the array
+        // Return the array
+        // </summary>
+        double[] multiplesArray = new double[length];
+        for (int i = 0; i < multiplesArray.Length; i++)
+        {
+            multiplesArray[i] = number * (i+1);
+        }
+        return multiplesArray; // replace this return statement with your own
     }
 
     /// <summary>
@@ -29,5 +40,15 @@ public static class Arrays
         // Remember: Using comments in your program, write down your process for solving this problem
         // step by step before you write the code. The plan should be clear enough that it could
         // be implemented by another person.
+        // <summary>
+        // get the range of values starting at the List.count - amount to move by to the max value of the list store in a variable
+        // remove that range the list
+        // place the list that was created at the front of the current list
+        //</summary>
+        int startIndex = data.Count - amount;
+
+        List<int> tempList = data.GetRange(startIndex, amount);
+        data.RemoveRange(startIndex, amount);
+        data.InsertRange(0, tempList);
     }
 }
