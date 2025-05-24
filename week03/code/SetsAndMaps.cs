@@ -22,7 +22,26 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        // First make a for loop where we check if the reverse of the words is currently in the set 
+        // if it is add the reverse and the current word to the return array 
+        // else add the word to the set
+        HashSet<string> reverseChecks = new HashSet<string>();
+        List<string> reversePairs = new List<string>();
+
+        foreach (string word in words)
+        {
+            // string reversedWord = new string(word.ToCharArray().Reverse().ToArray());
+            string reversedWord = $"{word[1]}{word[0]}";
+            if (reverseChecks.Contains(reversedWord))
+            {
+                reversePairs.Add($"{word} & {reversedWord}");
+            }
+            else
+            {
+                reverseChecks.Add(word);
+            }
+        }
+        return reversePairs.ToArray(); 
     }
 
     /// <summary>
@@ -42,7 +61,19 @@ public static class SetsAndMaps
         foreach (var line in File.ReadLines(filename))
         {
             var fields = line.Split(",");
+            string degree = fields[3];
             // TODO Problem 2 - ADD YOUR CODE HERE
+            // check if the key is already in the dictionary
+            // if the key already is there add one to the value of the key
+            // else add the key and set the value to one
+            if (degrees.ContainsKey(degree))
+            {
+                degrees[degree]++;
+            }
+            else
+            {
+                degrees[degree] = 1;
+            }
         }
 
         return degrees;
@@ -67,6 +98,56 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
+        string word1Serialized = word1.Replace(" ", "").ToLower();
+        string word2Serialized = word2.Replace(" ", "").ToLower();
+        if (word1Serialized.Length == word2Serialized.Length)
+        {
+            Dictionary<char, int> letterDictionary1 = new Dictionary<char, int>();
+            Dictionary<char, int> letterDictionary2 = new Dictionary<char, int>();
+            foreach (char letter in word1Serialized)
+            {
+                if (letterDictionary1.ContainsKey(letter))
+                {
+                    letterDictionary1[letter]++;
+                }
+                else
+                {
+                    letterDictionary1[letter] = 1;
+                }
+            }
+
+            foreach (char letter in word2Serialized)
+            {
+                if (letterDictionary2.ContainsKey(letter))
+                {
+                    letterDictionary2[letter]++;
+                }
+                else
+                {
+                    letterDictionary2[letter] = 1;
+                }
+            }
+            
+            if (letterDictionary1.Count() == letterDictionary2.Count())
+            {
+                foreach (var letter in letterDictionary1.Keys)
+                {
+                    if (!letterDictionary2.ContainsKey(letter))
+                    {
+                        return false;
+                    }
+                    else if (letterDictionary1[letter] != letterDictionary2[letter])
+                    {
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                return false;
+            }
+            return true; 
+        }
         return false;
     }
 
