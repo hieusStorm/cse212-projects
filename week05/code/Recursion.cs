@@ -1,4 +1,6 @@
 using System.Collections;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.Client.Payloads;
 
 public static class Recursion
 {
@@ -15,7 +17,16 @@ public static class Recursion
     public static int SumSquaresRecursive(int n)
     {
         // TODO Start Problem 1
-        return 0;
+        if (n == 1)
+        {
+            return 1;
+        }
+        else
+        {
+            int sum = n * n;
+            sum += SumSquaresRecursive(n - 1);
+            return sum;
+        }
     }
 
     /// <summary>
@@ -40,6 +51,19 @@ public static class Recursion
     public static void PermutationsChoose(List<string> results, string letters, int size, string word = "")
     {
         // TODO Start Problem 2
+        if (letters.Length == 0 || word.Length == size)
+        {
+            results.Add(word);
+            return;
+        }
+        else
+        {
+            for (int i = 0; i < letters.Length; i++)
+            {
+                string lettersLeft = letters.Remove(i, 1);
+                PermutationsChoose(results, lettersLeft, size, word + letters[i]);
+            }
+        }
     }
 
     /// <summary>
@@ -97,9 +121,19 @@ public static class Recursion
             return 4;
 
         // TODO Start Problem 3
-
+        // add memoization
+        if (remember == null)
+        {
+            remember = new Dictionary<int, decimal>();
+        }
+        if (remember.ContainsKey(s))
+        {
+            return remember[s];
+        }
         // Solve using recursion
-        decimal ways = CountWaysToClimb(s - 1) + CountWaysToClimb(s - 2) + CountWaysToClimb(s - 3);
+        // pass in all known ways of s as well
+        decimal ways = CountWaysToClimb(s - 1, remember) + CountWaysToClimb(s - 2, remember) + CountWaysToClimb(s - 3, remember);
+        remember[s] = ways;
         return ways;
     }
 
@@ -119,6 +153,22 @@ public static class Recursion
     public static void WildcardBinary(string pattern, List<string> results)
     {
         // TODO Start Problem 4
+        // determine base case
+        if (pattern.IndexOf("*") == -1)
+        {
+            results.Add(pattern);
+            return;
+        }
+        else
+        {
+            // replace the first wildcard with 0 and 1 and then call the function with that as the new pattern
+            for (int j = 0; j < 2; j++)
+            {
+                int wildcardLocation = pattern.IndexOf("*");
+                string newPattern = pattern.Remove(wildcardLocation, 1).Insert(wildcardLocation, j.ToString());
+                WildcardBinary(newPattern, results);
+            }
+        }
     }
 
     /// <summary>
@@ -129,10 +179,11 @@ public static class Recursion
     {
         // If this is the first time running the function, then we need
         // to initialize the currPath list.
-        if (currPath == null) {
+        if (currPath == null)
+        {
             currPath = new List<ValueTuple<int, int>>();
         }
-        
+
         // currPath.Add((1,2)); // Use this syntax to add to the current path
 
         // TODO Start Problem 5
