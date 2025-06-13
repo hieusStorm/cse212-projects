@@ -13,6 +13,12 @@ public class Node
     {
         // TODO Start Problem 1
 
+        // Check to see if the value to insert is already in the tree
+        if (Contains(value))
+        {
+            return;
+        }
+
         if (value < Data)
         {
             // Insert to the left
@@ -34,12 +40,61 @@ public class Node
     public bool Contains(int value)
     {
         // TODO Start Problem 2
-        return false;
+        if (value != Data)
+        {
+            // Travel on the left side of the tree
+            if (value < Data)
+            {
+                if (Left is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return Left.Contains(value);
+                }
+            }
+            // Travel on the right side of the tree
+            else
+            {
+                if (Right is null)
+                {
+                    return false;
+                }
+                else
+                {
+                   return Right.Contains(value);
+                }
+            }
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public int GetHeight()
     {
         // TODO Start Problem 4
-        return 0; // Replace this line with the correct return statement(s)
+        int leftHeight = 0;
+        int rightHeight = 0;
+        if (Left is not null)
+        {
+            leftHeight += Left.GetHeight();
+        }
+
+        if (Right is not null)
+        {
+            rightHeight += Right.GetHeight();
+        }
+
+        if (leftHeight >= rightHeight)
+        {
+            return leftHeight + 1;
+        }
+        else
+        {
+            return rightHeight + 1;
+        }
     }
 }
